@@ -9,8 +9,8 @@
     'category': 'Custom Modules/Workflows',
     'depends': ['base', 'sale'],
     'data': [
-        'sale_order.xml',
-        'sale_order_workflow.xml',
+        'views/sale_order_views.xml',
+        'workflows/sale_order_workflow.xml',
     ],
     'application': True,
     'installable': True,
