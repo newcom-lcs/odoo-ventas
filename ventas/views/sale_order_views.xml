@@ -22,8 +22,6 @@
             <field name="name">My Quotations</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
-            <field name="view_type">form</field>
-            <field name="view_id" ref="sale.view_quotation_tree"/>
             <field name="view_mode">tree,form,calendar,graph</field>
             <field name="context">{'search_default_my_sale_orders_filter': 1}</field>
             <field name="domain">[('state','in',('draft','approved', 'sent','cancel'))]</field>
