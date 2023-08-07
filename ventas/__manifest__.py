@@ -9,7 +9,6 @@
     'category': 'Custom Modules/Workflows',
     'depends': ['base', 'sale'],
     'data': [],
-    'demo',
     'application': True,
 }
 
