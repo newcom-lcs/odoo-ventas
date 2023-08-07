@@ -44,7 +44,6 @@
         <menuitem action="my_action_quotations"
             name="My Quotation"
             id="menu_my_quotation"
-            parent="base.menu_sales"
             sequence="99"/>
         
 
