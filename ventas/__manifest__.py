@@ -8,8 +8,12 @@
     'author': 'Newcom LCS',
     'category': 'Custom Modules/Workflows',
     'depends': ['base', 'sale'],
-    'data': [],
+    'data': [
+        'sale_order.xml',
+        'sale_order_workflow.xml',
+    ],
     'application': True,
+    'installable': True,
 }
 
 
