@@ -13,7 +13,7 @@
         'workflows/sale_order_workflow.xml',
     ],
     'application': True,
-    'installable': True,
+    # 'installable': True,
 }
 
 
