@@ -1,11 +1,11 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
-class sale_order(models.Model):
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    state = fields.Selection(selection_add=[('approved', "Aprobada")])
+    state = fields.Selection(selection_add=[('approved', "Aprobado"), ('sale',)])
     
-    @api.one
     def action_quotation_approve(self):
         self.state = 'approved'
+        return
 
