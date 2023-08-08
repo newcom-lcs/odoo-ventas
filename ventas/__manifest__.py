@@ -10,10 +10,9 @@
     'depends': ['base', 'sale_management'],
     'data': [
         'views/sale_order_views.xml',
-        'workflows/sale_order_workflow.xml',
     ],
     'application': True,
-    # 'installable': True,
+    'installable': True,
 }
 
 
