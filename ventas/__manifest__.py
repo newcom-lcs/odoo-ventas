@@ -4,7 +4,7 @@
     'description': """Funcionalidades
         - Agrega etapa de validación de Orden de Venta
         """,
-    'licence': 'OPL-1',
+    'license': 'LGPL-3',
     'author': 'Newcom LCS',
     'category': 'Custom Modules/Workflows',
     'depends': ['base', 'sale'],
