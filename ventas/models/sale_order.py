@@ -1,9 +1,6 @@
 from odoo import api, fields, models
 
 class sale_order(models.Model):
-    '''
-    extension to existing sale.order model
-    '''
     _inherit = 'sale.order'
     
     state = fields.Selection(selection_add=[('approved', "Aprobada")])
