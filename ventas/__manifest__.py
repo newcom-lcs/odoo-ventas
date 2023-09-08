@@ -7,7 +7,7 @@
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
     'category': 'Custom Modules/Workflows',
-    'depends': ['base', 'sale_management'],
+    'depends': ['base', 'sale_management', 'analytic'],
     'data': [
         'views/sale_order_views.xml',
     ],
