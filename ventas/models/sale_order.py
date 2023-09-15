@@ -9,3 +9,13 @@ class SaleOrder(models.Model):
     #     self.state = 'approved'
     #     return
 
+    def _action_confirm(self):
+        result = super(SaleOrder, self)._action_confirm()
+        if result:
+            # crea una cuenta analítica si no tiene una
+            for order in self:
+                if not order.analytic_account_id:
+                    order._create_analytic_account()
+                    
+        return result
+    
