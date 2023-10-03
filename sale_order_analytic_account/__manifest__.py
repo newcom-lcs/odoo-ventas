@@ -5,7 +5,7 @@
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
     'category': 'Sales',
-    'depends': ['base', 'sale_management'],
+    'depends': ['base', 'sale_management', 'analytic'],
     'data': [ ],
     'application': True,
     'installable': True,
