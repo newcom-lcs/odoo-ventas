@@ -4,7 +4,7 @@
     'description': """""",
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
-    'category': 'Custom Modules/Workflows',
+    'category': 'Sales',
     'depends': ['base', 'sale_management'],
     'data': [ ],
     'application': True,
