@@ -1,5 +1,5 @@
 {
-    'name': 'Sale Order B.O.M',
+    'name': 'Lista de Materiales para Ventas',
     'summary': """Lista de Materiales para Ordenes de Venta""",
     'description': """""",
     'license': 'LGPL-3',
@@ -13,7 +13,7 @@
     ],
     'application': True,
     'installable': True,
-    'auto_install': False,
+    'auto_install': True,
 }
 
 

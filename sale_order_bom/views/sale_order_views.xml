@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <page name="order_lines" position="after">
-                <page string="B.O.M."
+                <page string="Materiales"
                     name="bom_products"
                     >
                     <field name="sale_order_bom_ids" mode="tree,form">
@@ -19,7 +19,6 @@
                                 <field name="product_uom_category_id" invisible="1"/>
                                 <field name="uom_id" groups="uom.group_uom"/>
                                 <!-- <field name="price_unit"/> -->
-                                <!-- <field name="discount" groups="product.group_discount_per_so_line"/> -->
                                 <field name="is_present" />
                             </group>
                         </form>
@@ -37,10 +36,6 @@
                             <field name="uom_id" string="UoM" groups="uom.group_uom" optional="show"/>
                             <field name="product_uom_category_id" invisible="1"/>
                             <!-- <field name="price_unit"/> -->
-                            <!-- <field name="discount"
-                                string="Disc.%"
-                                groups="product.group_discount_per_so_line"
-                                optional="show"/> -->
                             <field name="is_present" invisible="1" />
                             <button name="button_add_to_order"
                                 type="object"
