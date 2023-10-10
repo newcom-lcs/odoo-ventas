@@ -7,7 +7,9 @@
     'category': 'Sales',
     'depends': ['base', 'sale_management', 'analytic'],
     'data': [
-        'views/sale_order_views.xml',        
+        'views/sale_order_views.xml',
+        'security/ir.model.access.csv',
+        'security/sale_management_security.xml'
     ],
     'application': True,
     'installable': True,
