@@ -111,6 +111,7 @@ class SaleOrderBom(models.Model):
             'product_uom_qty': self.quantity,
             'product_uom': self.uom_id.id,
             'discount': self.discount,
+            'display_type': 'line_bom',
         }
 
     @api.depends('line_id', 'order_id.order_line', 'product_id')
