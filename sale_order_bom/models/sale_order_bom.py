@@ -111,6 +111,7 @@ class SaleOrderBom(models.Model):
             'product_uom_qty': self.quantity,
             'product_uom': self.uom_id.id,
             'discount': self.discount,
+            'bom': True,
         }
 
     @api.depends('line_id', 'order_id.order_line', 'product_id')
@@ -135,12 +136,14 @@ class SaleOrderBom(models.Model):
 
         sale_order = self.order_id
 
-        # if sale_order.state not in ['draft', 'sent']:
-        #     raise UserError(_('You cannot add options to a confirmed order.'))
-
         values = self._get_values_to_add_to_order()
         order_line = self.env['sale.order.line'].create(values)
 
         self.write({'line_id': order_line.id})
         if sale_order:
             sale_order.add_option_to_order_with_taxcloud()
+
+
+
+
+            
