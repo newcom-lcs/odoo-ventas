@@ -106,12 +106,11 @@ class SaleOrderBom(models.Model):
         return {
             'order_id': self.order_id.id,
             'price_unit': self.price_unit,
-            'name': self.name,
+            'name': '[BOM] ' + self.name,
             'product_id': self.product_id.id,
             'product_uom_qty': self.quantity,
             'product_uom': self.uom_id.id,
             'discount': self.discount,
-            'display_type': 'line_bom',
         }
 
     @api.depends('line_id', 'order_id.order_line', 'product_id')
