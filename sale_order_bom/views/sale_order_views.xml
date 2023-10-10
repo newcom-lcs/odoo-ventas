@@ -7,10 +7,10 @@
         <field name="arch" type="xml">
             <page name="order_lines" position="after">
                 <page string="B.O.M."
-                    name="optional_products"
+                    name="bom_products"
                     >
-                    <field name="sale_order_option_ids" mode="tree,form">
-                        <form string="Optional Products">
+                    <field name="sale_order_bom_ids" mode="tree,form">
+                        <form string="Material">
                             <group>
                                 <field name="product_id"
                                     domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"/>
@@ -18,8 +18,8 @@
                                 <field name="quantity"/>
                                 <field name="product_uom_category_id" invisible="1"/>
                                 <field name="uom_id" groups="uom.group_uom"/>
-                                <field name="price_unit"/>
-                                <field name="discount" groups="product.group_discount_per_so_line"/>
+                                <!-- <field name="price_unit"/> -->
+                                <!-- <field name="discount" groups="product.group_discount_per_so_line"/> -->
                                 <field name="is_present" />
                             </group>
                         </form>
@@ -36,17 +36,17 @@
                             <field name="quantity"/>
                             <field name="uom_id" string="UoM" groups="uom.group_uom" optional="show"/>
                             <field name="product_uom_category_id" invisible="1"/>
-                            <field name="price_unit"/>
-                            <field name="discount"
+                            <!-- <field name="price_unit"/> -->
+                            <!-- <field name="discount"
                                 string="Disc.%"
                                 groups="product.group_discount_per_so_line"
-                                optional="show"/>
+                                optional="show"/> -->
                             <field name="is_present" invisible="1" />
                             <button name="button_add_to_order"
                                 type="object"
                                 class="oe_link"
-                                icon="fa-shopping-cart"
-                                title="Add to order lines"
+                                icon="fa-plus-square"
+                                title="Agregar a Orden de Venta"
                                 attrs="{'invisible': [('is_present', '=', True)]}"/>
                         </tree>
                     </field>
