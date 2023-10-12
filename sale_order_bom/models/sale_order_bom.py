@@ -40,8 +40,8 @@ class SaleOrderBom(models.Model):
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
 
     price_unit = fields.Float(
-        string="Unit Price",
-        digits='Product Price',
+        string="Product Cost",
+        # digits='Product Cost',
         compute='_compute_price_unit',
         store=True, readonly=False,
         required=True, precompute=True)
@@ -53,9 +53,10 @@ class SaleOrderBom(models.Model):
         help="This field will be checked if the option line's product is "
              "already present in the quotation.")
 
-    pendiente = fields.Float(
-        string="Pendientes",
-        compute='_compute_pendiente',
+    pending_qty = fields.Float(
+        string="Pending",
+        compute='_compute_pending_qty',
+        store=True
         )
 
     #=== COMPUTE METHODS ===#
@@ -95,7 +96,7 @@ class SaleOrderBom(models.Model):
             'price_unit': 0,
             'name': self.name,
             'product_id': self.product_id.id,
-            'product_uom_qty': self.pendiente,
+            'product_uom_qty': self.pending_qty,
             'product_uom': self.uom_id.id,
             # 'discount': self.discount,
         }
@@ -103,22 +104,22 @@ class SaleOrderBom(models.Model):
     @api.depends('line_id', 'order_id.order_line', 'product_id')
     def _compute_is_present(self):
         for bom in self:
-            bom.is_present == bom.pendiente == 0
+            bom.is_present == bom.pending_qty == 0
 
     def _search_is_present(self, operator, value):
         if (operator, value) in [('=', True), ('!=', False)]:
             return [('line_id', '=', False)]
         return [('line_id', '!=', False)]
 
-    def _compute_pendiente(self):
+    def _compute_pending_qty(self):
         for bom in self:
             total = 0
-            lista = bom.order_id.order_line.filtered(lambda l: l.product_id == bom.product_id) #.forEach(lambda i: total += i.product_uom_qty)
+            lista = bom.order_id.order_line.filtered(lambda l: l.product_id == bom.product_id) 
 
             for i in range(len(lista)):
                 total += lista[i].product_uom_qty
             
-            bom.pendiente = max([(bom.quantity - total), 0])
+            bom.pending_qty = bom.quantity - total
 
         
     #=== ACTION METHODS ===#
