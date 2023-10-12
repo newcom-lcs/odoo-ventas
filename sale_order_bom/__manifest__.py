@@ -8,7 +8,8 @@
     'depends': ['base', 'sale_management'],
     'data': [
         'views/sale_order_views.xml',
-        'views/report_invoice.xml',        
+        'views/res_config_settings_views.xml',
+        'views/report_invoice.xml',
         'security/ir.model.access.csv',
         'security/sale_management_security.xml'
     ],
