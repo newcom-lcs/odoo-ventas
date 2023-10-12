@@ -1,11 +1,11 @@
 {
-    'name': 'Lista de Materiales para Ventas',
+    'name': 'Sale BOM',
     'summary': """Lista de Materiales para Ordenes de Venta""",
     'description': """""",
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
     'category': 'Sales',
-    'depends': ['base', 'sale_management', 'analytic'],
+    'depends': ['base', 'sale_management'],
     'data': [
         'views/sale_order_views.xml',
         'security/ir.model.access.csv',
@@ -13,7 +13,7 @@
     ],
     'application': True,
     'installable': True,
-    'auto_install': False,
+    # 'auto_install': False,
 }
 
 
