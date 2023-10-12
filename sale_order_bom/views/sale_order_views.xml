@@ -19,7 +19,7 @@
                                 <field name="product_uom_category_id" invisible="1"/>
                                 <field name="uom_id" groups="uom.group_uom"/>
                                 <field name="price_unit"/>
-                                <field name="is_present" />
+                                <!-- <field name="is_present" /> -->
                             </group>
                         </form>
                         <tree string="Sales Quotation Template Lines"

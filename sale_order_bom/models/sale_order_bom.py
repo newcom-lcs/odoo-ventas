@@ -30,6 +30,7 @@ class SaleOrderBom(models.Model):
         required=True,
         digits='Product Unit of Measure',
         default=1)
+    
     uom_id = fields.Many2one(
         comodel_name='uom.uom',
         string="Unit of Measure",
@@ -41,10 +42,8 @@ class SaleOrderBom(models.Model):
 
     price_unit = fields.Float(
         string="Product Cost",
-        # digits='Product Cost',
-        compute='_compute_price_unit',
-        store=True, readonly=False,
-        required=True, precompute=True)
+        digits='Product Cost',
+        )
 
     is_present = fields.Boolean(
         string="Present on Quotation",
@@ -54,9 +53,9 @@ class SaleOrderBom(models.Model):
              "already present in the quotation.")
 
     pending_qty = fields.Float(
-        string="Pending",
+        string="Pending Qty",
         compute='_compute_pending_qty',
-        store=True
+        store=True, precompute=True, readonly=True
         )
 
     #=== COMPUTE METHODS ===#
@@ -76,18 +75,18 @@ class SaleOrderBom(models.Model):
                 continue
             option.uom_id = option.product_id.uom_id
 
-    @api.depends('product_id', 'uom_id', 'quantity')
-    def _compute_price_unit(self):
-        for option in self:
-            if not option.product_id or not option.order_id.pricelist_id:
-                continue
-            # To compute the price_unit a so line is created in cache
-            values = option._get_values_to_add_to_order()
-            new_sol = self.env['sale.order.line'].new(values)
-            new_sol._compute_price_unit()
-            option.price_unit = new_sol.price_unit
-            # Avoid attaching the new line when called on template change
-            new_sol.order_id = False
+    # @api.depends('product_id', 'uom_id', 'quantity')
+    # def _compute_price_unit(self):
+    #     for option in self:
+    #         if not option.product_id or not option.order_id.pricelist_id:
+    #             continue
+    #         # To compute the price_unit a so line is created in cache
+    #         values = option._get_values_to_add_to_order()
+    #         new_sol = self.env['sale.order.line'].new(values)
+    #         new_sol._compute_price_unit()
+    #         option.price_unit = new_sol.price_unit
+    #         # Avoid attaching the new line when called on template change
+    #         new_sol.order_id = False
 
     def _get_values_to_add_to_order(self):
         self.ensure_one()
@@ -104,13 +103,14 @@ class SaleOrderBom(models.Model):
     @api.depends('line_id', 'order_id.order_line', 'product_id')
     def _compute_is_present(self):
         for bom in self:
-            bom.is_present == bom.pending_qty == 0
+            bom.is_present = (bom.pending_qty == 0)
 
     def _search_is_present(self, operator, value):
         if (operator, value) in [('=', True), ('!=', False)]:
             return [('line_id', '=', False)]
         return [('line_id', '!=', False)]
 
+    @api.depends('line_id', 'order_id.order_line', 'product_id')
     def _compute_pending_qty(self):
         for bom in self:
             total = 0
