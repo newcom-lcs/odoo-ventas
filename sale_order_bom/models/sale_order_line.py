@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    bom = fields.Boolean("Material Adicional", default=False)
+    # bom = fields.Boolean("Material Adicional", default=False)
 
     
     

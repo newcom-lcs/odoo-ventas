@@ -45,11 +45,6 @@ class SaleOrderBom(models.Model):
         compute='_compute_price_unit',
         store=True, readonly=False,
         required=True, precompute=True)
-    discount = fields.Float(
-        string="Discount (%)",
-        digits='Discount',
-        compute='_compute_discount',
-        store=True, readonly=False, precompute=True)
 
     is_present = fields.Boolean(
         string="Present on Quotation",
@@ -57,6 +52,11 @@ class SaleOrderBom(models.Model):
         search='_search_is_present',
         help="This field will be checked if the option line's product is "
              "already present in the quotation.")
+
+    pendiente = fields.Float(
+        string="Pendientes",
+        compute='_compute_pendiente',
+        )
 
     #=== COMPUTE METHODS ===#
 
@@ -88,44 +88,39 @@ class SaleOrderBom(models.Model):
             # Avoid attaching the new line when called on template change
             new_sol.order_id = False
 
-    @api.depends('product_id', 'uom_id', 'quantity')
-    def _compute_discount(self):
-        for option in self:
-            if not option.product_id:
-                continue
-            # To compute the discount a so line is created in cache
-            values = option._get_values_to_add_to_order()
-            new_sol = self.env['sale.order.line'].new(values)
-            new_sol._compute_discount()
-            option.discount = new_sol.discount
-            # Avoid attaching the new line when called on template change
-            new_sol.order_id = False
-
     def _get_values_to_add_to_order(self):
         self.ensure_one()
         return {
             'order_id': self.order_id.id,
-            'price_unit': self.price_unit,
-            'name': '[BOM] ' + self.name,
+            'price_unit': 0,
+            'name': self.name,
             'product_id': self.product_id.id,
-            'product_uom_qty': self.quantity,
+            'product_uom_qty': self.pendiente,
             'product_uom': self.uom_id.id,
-            'discount': self.discount,
-            'bom': True,
+            # 'discount': self.discount,
         }
 
     @api.depends('line_id', 'order_id.order_line', 'product_id')
     def _compute_is_present(self):
-        # NOTE: this field cannot be stored as the line_id is usually removed
-        # through cascade deletion, which means the compute would be false
-        for option in self:
-            option.is_present = bool(option.order_id.order_line.filtered(lambda l: l.product_id == option.product_id))
+        for bom in self:
+            bom.is_present == bom.pendiente == 0
 
     def _search_is_present(self, operator, value):
         if (operator, value) in [('=', True), ('!=', False)]:
             return [('line_id', '=', False)]
         return [('line_id', '!=', False)]
 
+    def _compute_pendiente(self):
+        for bom in self:
+            total = 0
+            lista = bom.order_id.order_line.filtered(lambda l: l.product_id == bom.product_id) #.forEach(lambda i: total += i.product_uom_qty)
+
+            for i in range(len(lista)):
+                total += lista[i].product_uom_qty
+            
+            bom.pendiente = max([(bom.quantity - total), 0])
+
+        
     #=== ACTION METHODS ===#
 
     def button_add_to_order(self):
