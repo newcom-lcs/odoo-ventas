@@ -37,6 +37,7 @@
                             <field name="product_uom_category_id" invisible="1"/>
                             <!-- <field name="price_unit"/> -->
                             <field name="is_present" invisible="1" />
+                            <field name="pendiente" />
                             <button name="button_add_to_order"
                                 type="object"
                                 class="oe_link"
