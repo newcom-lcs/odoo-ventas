@@ -13,8 +13,8 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
        res = super(ResConfigSettings, self).set_values()
        self.env['ir.config_parameter'].sudo().set_param('sale_order.add_bom_prefix', self.module_sale_order_bom_add_prefix)
-       self.env['ir.config_parameter'].sudo().set_param('sale_order.hide_bom_items', self.module_sale_order_invoice_hide_bom_items)
-       self.env['ir.config_parameter'].sudo().set_param('sale_order.hide_cero_price', self.module_sale_order_invoice_hide_items_with_cero_price)
+       self.env['ir.config_parameter'].sudo().set_param('sale_order.invoice_hide_bom_items', self.module_sale_order_invoice_hide_bom_items)
+       self.env['ir.config_parameter'].sudo().set_param('sale_order.invoice_hide_cero_price', self.module_sale_order_invoice_hide_items_with_cero_price)
        return res
     @api.model
     def get_values(self):
