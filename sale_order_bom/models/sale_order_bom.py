@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+# from odoo.api import Environment, SUPERUSER_ID
 
 
 class SaleOrderBom(models.Model):
@@ -58,6 +59,8 @@ class SaleOrderBom(models.Model):
         store=True, precompute=True, readonly=True
         )
 
+    # add_prefix = fields.Boolean(string="Agregar Prefijo", config_parameter='sale_order.add_bom_prefix')
+
     #=== COMPUTE METHODS ===#
 
     @api.depends('product_id')
@@ -75,29 +78,23 @@ class SaleOrderBom(models.Model):
                 continue
             option.uom_id = option.product_id.uom_id
 
-    # @api.depends('product_id', 'uom_id', 'quantity')
-    # def _compute_price_unit(self):
-    #     for option in self:
-    #         if not option.product_id or not option.order_id.pricelist_id:
-    #             continue
-    #         # To compute the price_unit a so line is created in cache
-    #         values = option._get_values_to_add_to_order()
-    #         new_sol = self.env['sale.order.line'].new(values)
-    #         new_sol._compute_price_unit()
-    #         option.price_unit = new_sol.price_unit
-    #         # Avoid attaching the new line when called on template change
-    #         new_sol.order_id = False
-
     def _get_values_to_add_to_order(self):
         self.ensure_one()
+        name = self.name
+
+        add_prefix = self.env['ir.config_parameter'].sudo().get_param('sale_order.add_bom_prefix')
+
+        
+        if bool(add_prefix):
+            name = "[BOM] " + name
+        
         return {
             'order_id': self.order_id.id,
             'price_unit': 0,
-            'name': self.name,
+            'name': name,
             'product_id': self.product_id.id,
             'product_uom_qty': self.pending_qty,
             'product_uom': self.uom_id.id,
-            # 'discount': self.discount,
         }
 
     @api.depends('line_id', 'order_id.order_line', 'product_id')
