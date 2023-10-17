@@ -2,44 +2,54 @@
 <odoo>
 
     <record model="ir.ui.view" id="res_config_settings_view_form">
-        <field name="name">res.config.settings.view.form</field>
+        <field name="name">res.config.settings.view.form.inherit.sale.management</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@data-key='account']/div" position="after">
-                <div  id="argentina_localization_section" invisible="1">
-                    <h2 attrs="{'invisible':[('country_code', '!=', 'AR')]}">Argentinean Localization</h2>
-                    <div class="row mt16 o_settings_container" id="argentina_localization" attrs="{'invisible':[('country_code', '!=', 'AR')]}">
-                    </div>
+            <xpath expr="//div[@data-key='sale_management']" position="inside">
+                <div  id="sale_order_bom_settings">
+                     <h2>Sales B.O.M.</h2>
+                     <div class="row mt16 o_settings_container">
+                         <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_left_pane">
+                                 <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
+                                     <field name="module_sale_order_bom_add_prefix" class="text-center oe_inline" />
+                                 </div>
+                             </div>
+                             <div class="o_setting_right_pane">
+                                 <span class="o_form_label">Add "[BOM]" prefix to sale order Items</span>
+                             </div>
+                         </div>
+
+                         <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_left_pane">
+                                 <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
+                                     <field name="module_sale_order_invoice_hide_bom_items" class="text-center oe_inline" />
+                                 </div>
+                             </div>
+                             <div class="o_setting_right_pane">
+                                 <span class="o_form_label">Hide items with '[BOM]' prefix from customer invoices</span>
+                             </div>
+                         </div>
+
+                         <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_left_pane">
+                                 <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
+                                     <field name="module_sale_order_invoice_hide_items_with_cero_price" class="text-center oe_inline" />
+                                 </div>
+                             </div>
+                             <div class="o_setting_right_pane">
+                                 <span class="o_form_label">Hide items with price = 0 from customer invoices</span>
+                             </div>
+                         </div>
+                         
+
+                         
+                     </div>
                 </div>
             </xpath>
         </field>
     </record>
 
     
-    <!-- <record id="res_config_settings_view_form" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.sale.management</field>
-        <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@data-key='sale_management']" position="inside">
-                <div class="col-12 col-lg-6 o_setting_box" id="sale_order_bom_settings">
-                    <h2>Sale Order BOM</h2>
-                </div>
-            </xpath>
-
-        </field>
-    </record>
- -->
-    <!-- <record id="res_config_settings_view_form_inherit_sale_management" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.sale.management</field>
-        <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@data-key='sale_management']" position="attributes">
-                <attribute name="class">app_settings_block</attribute>
-            </xpath>
-        </field>
-    </record>
- -->
 </odoo>
