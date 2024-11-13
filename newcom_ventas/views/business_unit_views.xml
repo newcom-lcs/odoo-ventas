@@ -1,0 +1,59 @@
+<odoo>
+    <!-- Form View for Business Unit -->
+    <record id="view_business_unit_form" model="ir.ui.view">
+        <field name="name">business.unit.form</field>
+        <field name="model">business.unit</field>
+        <field name="arch" type="xml">
+            <form string="Business Unit">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Business Unit -->
+    <record id="view_business_unit_tree" model="ir.ui.view">
+        <field name="name">business.unit.tree</field>
+        <field name="model">business.unit</field>
+        <field name="arch" type="xml">
+            <tree string="Business Unit">
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for Business Unit -->
+    <record id="action_business_unit_list" model="ir.actions.act_window">
+        <field name="name">Business Units</field>
+        <field name="res_model">business.unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_business_unit_tree"/>
+    </record>
+
+    <!-- Menu Item under Sales Configuration -->
+    <menuitem id="menu_business_unit_configuration_root" 
+              name="Business Units" 
+              parent="sale.menu_sale_config" 
+              sequence="20" 
+              action="action_business_unit_list"
+              groups="base.group_user"/>
+
+    <!-- Add Business Unit Field in CRM Lead Form -->
+    <record id="view_crm_form_business_unit" model="ir.ui.view">
+        <field name="name">crm.lead.form.business.unit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Business Unit field below tag_ids -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="business_unit_id" options="{'no_create': True}" groups="base.group_user"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
