@@ -7,8 +7,9 @@ class SaleOrder(models.Model):
         result = super(SaleOrder, self)._action_confirm()
         # crea una cuenta analítica si no tiene una
         for order in self:
-            if not order.analytic_account_id:
+            if not order.analytic_account_id and order.company_id.create_analytic_account:
                 order._create_analytic_account()
                     
         return result
+
     

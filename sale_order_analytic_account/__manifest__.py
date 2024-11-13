@@ -6,7 +6,9 @@
     'author': 'Newcom LCS',
     'category': 'Sales',
     'depends': ['base', 'sale_management', 'analytic'],
-    'data': [ ],
+    'data': [
+        'views/res_company_views.xml', 
+    ],
     'application': True,
     'installable': True,
     'auto_install': False,
