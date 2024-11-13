@@ -1,5 +1,5 @@
 {
-    'name': 'Bank Reonciliation Helper',
+    'name': 'Bank Reconciliation Helper',
     'summary': """""",
     'description': """""",
     'license': 'LGPL-3',

@@ -1,8 +1,10 @@
 {
-    'name': 'Custom Sales Order and Partner Fields',
+    'name': 'Newcom Ventas',
     'version': '1.0',
     'category': 'Sales',
     'summary': 'Adds custom fields to sales orders and partners',
+    'license': 'LGPL-3',
+    'author': 'Newcom LCS',
     'description': """
         This module adds the following custom fields:
         - Margen Teorico (Sales Order)
