@@ -7,6 +7,8 @@ from odoo.addons.base.models.res_bank import sanitize_account_number
 from xmlrpc.client import MAXINT
 from itertools import product
 
+import logging
+_logger = logging.getLogger(__name__)
 import re
 
 
@@ -27,35 +29,37 @@ class AccountBankStatementLine(models.Model):
     # HELPERS
     # -------------------------------------------------------------------------
     def _buscar_partner(self, payment_ref):
-
         if self.partner_id:
             return self.partner_id
-        
-        
 
-        # raise ValidationError(payment_ref)
-
-        if match := re.search(r'[^0-9]([0-9]{11})', payment_ref):
+        if match := re.search(r'[^0-9]([0-9]{11})[^0-9]', payment_ref):
             cuit = match.group(1)
+            cuitConGuiones = cuit[:2]+"-"+cuit[2:10]+"-"+cuit[10:]
         
             domains = product(
                 [
                     ('vat', '=ilike', cuit),
                     ('vat', 'ilike', cuit),
+                    ('vat', 'ilike', cuitConGuiones),
+                    ('vat', '=ilike', cuitConGuiones),
                 ],
-                [
-                    ('company_id', '=', self.company_id.id),
-                    ('company_id', '=', False),
-                ],
+                # [
+                #     ('company_id', '=', self.company_id.id),
+                #     ('company_id', '=', False),
+                # ],
+                # [
+                #     ('parent_id', '=', False)
+                # ]
             )
             
+            
             for domain in domains:
-                partner = self.env['res.partner'].search(list(domain) + [('parent_id', '=', False)], limit=1)
+                
+                partner = self.env['res.partner'].search(list(domain), limit=1)
                 if partner:
                     return partner.id
 
+
         return self.partner_id
-
-
 
 
