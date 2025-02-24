@@ -1,10 +1,9 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     opportunity_id = fields.Many2one('crm.lead', string='Opportunity', store=True)
-    opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
     business_unit_id = fields.Many2one('business.unit', string='Business Unit', related='opportunity_id.business_unit_id', store=True)
     margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True)
     mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", help="Date to generate the invoice", store=True)
@@ -13,6 +12,7 @@ class SaleOrder(models.Model):
         ('cajas', 'Cajas'),
         ('proyectos', 'Proyectos')],
         string="Tipo de Negocio", help="Type of business related to the sales order", store=True)
+    state = fields.Selection(selection_add=[('approved', 'Approved')])
 
     def _select(self):
         return super(SaleReport, self)._select() + """
@@ -39,22 +39,9 @@ class SaleOrder(models.Model):
                     
         return result
 
-    @api.depends('opportunity_id')
-    def _compute_opportunity_count(self):
+    def action_quotation_approve(self):
+        """Approve the quotation and move it to approved state."""
         for order in self:
-            order.opportunity_count = 1 if order.opportunity_id else 0
-
-    def action_view_opportunity(self):
-        self.ensure_one()
-        if not self.opportunity_id:
-            return {}
-            
-        action = {
-            'type': 'ir.actions.act_window',
-            'name': 'Opportunity',
-            'res_model': 'crm.lead',
-            'view_mode': 'form',
-            'res_id': self.opportunity_id.id,
-            'target': 'current',
-        }
-        return action
+            if order.state == 'sent':
+                order.write({'state': 'approved'})
+        return True
