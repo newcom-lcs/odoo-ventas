@@ -16,7 +16,7 @@
                             class="oe_stat_button"
                             icon="fa-star"
                             attrs="{'invisible': [('opportunity_id', '=', False)]}">
-                        <field name="opportunity_count" widget="statinfo" string="Opportunity"/>
+                        <field name="opportunity_count" widget="statinfo" string="Oportunidad"/>
                     </button>
                 </div>
 
