@@ -13,6 +13,26 @@ class SaleOrder(models.Model):
         ('proyectos', 'Proyectos')],
         string="Tipo de Negocio", help="Type of business related to the sales order", store=True)
     state = fields.Selection(selection_add=[('approved', 'Approved')])
+    opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
+
+    def _compute_opportunity_count(self):
+        for order in self:
+            order.opportunity_count = 1 if order.opportunity_id else 0
+
+    def action_view_opportunity(self):
+        self.ensure_one()
+        if not self.opportunity_id:
+            return {}
+        
+        action = {
+            'type': 'ir.actions.act_window',
+            'name': 'Opportunity',
+            'res_model': 'crm.lead',
+            'view_mode': 'form',
+            'res_id': self.opportunity_id.id,
+            'context': {'default_type': 'opportunity'}
+        }
+        return action
 
     def _select(self):
         return super(SaleReport, self)._select() + """
