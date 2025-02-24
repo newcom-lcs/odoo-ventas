@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data> 
-       <!-- <record id="sale_order_view_form" model="ir.ui.view">
+        <record id="sale_order_view_form" model="ir.ui.view">
             <field name="name">sale.order.view.form.inherit.custom_addon</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                    <button name="action_quotation_send" position="after">
-                        <button name="action_quotation_approve" string="Aprobar" states="sent"
-                            type="object" class="oe_highlight" groups="base.group_user"/>
+                <div name="button_box" position="inside">
+                    <button name="action_view_opportunity" 
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-star"
+                            attrs="{'invisible': [('opportunity_id', '=', False)]}">
+                        <field name="opportunity_count" widget="statinfo" string="Opportunity"/>
                     </button>
-                    <button name="action_confirm" position="replace">
-                        <button name="action_confirm" id="action_confirm" data-hotkey="v"
-                            string="Confirm" class="btn-primary" type="object" context="{'validate_analytic': True}"
-                            attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
-                    </button>
-                
-                    <field name="state" position="attributes">
-                        <attribute name="statusbar_visible">draft,sent,approved,progress,done</attribute>
-                    </field>  
+                </div>
+
+                <button name="action_quotation_send" position="after">
+                    <button name="action_quotation_approve" string="Aprobar" states="sent"
+                        type="object" class="oe_highlight" groups="base.group_user"/>
+                </button>
+                <button name="action_confirm" position="replace">
+                    <button name="action_confirm" id="action_confirm" data-hotkey="v"
+                        string="Confirm" class="btn-primary" type="object" context="{'validate_analytic': True}"
+                        attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
+                </button>
+            
+                <field name="state" position="attributes">
+                    <attribute name="statusbar_visible">draft,sent,approved,progress,done</attribute>
+                </field>  
             </field>
         </record>
-        -->
     </data>
 </odoo>
