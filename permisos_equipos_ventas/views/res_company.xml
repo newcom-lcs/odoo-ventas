@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_company_form_inherit_approval" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.approval</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//group" position="inside">
+                <group string="Flujo de Aprobaciones">
+                    <field name="use_approval_flow"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

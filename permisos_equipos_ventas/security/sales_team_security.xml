@@ -1,0 +1,42 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Extend base salesman group -->
+        <record id="sales_team.group_sale_salesman" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Add team documents level -->
+        <record id="group_sale_team_documents" model="res.groups">
+            <field name="name">Usuario: Mostrar documentos del equipo</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <!-- Extend manager group to include team documents -->
+        <record id="sales_team.group_sale_manager" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_sale_team_documents'))]"/>
+        </record>
+
+        <!-- Record Rules -->
+        <record id="sales_order_team_access_rule" model="ir.rule">
+            <field name="name">Sales Orders: Team Documents</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="groups" eval="[(4, ref('group_sale_team_documents'))]"/>
+            <field name="domain_force">[('team_id', 'in', user.crm_team_ids.ids)]</field>
+        </record>
+
+        <record id="crm_team_access_rule" model="ir.rule">
+            <field name="name">CRM: Team Documents</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="groups" eval="[(4, ref('group_sale_team_documents'))]"/>
+            <field name="domain_force">[('team_id', 'in', user.crm_team_ids.ids)]</field>
+        </record>
+
+        <record id="sales_order_line_team_access_rule" model="ir.rule">
+            <field name="name">Sales Order Lines: Team Documents</field>
+            <field name="model_id" ref="sale.model_sale_order_line"/>
+            <field name="groups" eval="[(4, ref('group_sale_team_documents'))]"/>
+            <field name="domain_force">[('order_id.team_id', 'in', user.crm_team_ids.ids)]</field>
+        </record>
+    </data>
+</odoo>
