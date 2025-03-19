@@ -3,7 +3,7 @@
     "version": "1.0",
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
-    "depends": ["sale_management", "crm", "stock", "purchase", "mail"],
+    "depends": ["sale_management", "sales_team", "crm", "stock", "purchase", "mail"],
     "summary": "Manage sales orders visibility by team and read-only access to inventory and purchases.",
     "description": """
         - Restrict sales orders visibility based on team membership.

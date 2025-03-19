@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_sale_order_team,sale.order.team.access,sale.model_sale_order,permisos_equipos_ventas.group_sale_team_documents,1,1,1,1
-access_crm_lead_team,crm.lead.team.access,crm.model_crm_lead,permisos_equipos_ventas.group_sale_team_documents,1,1,1,1
-access_sale_order_line_team,sale.order.line.team.access,sale.model_sale_order_line,permisos_equipos_ventas.group_sale_team_documents,1,1,1,1
+access_sale_order_team,sale.order.team.access,sale.model_sale_order,permisos_equipos_ventas.group_sale_team_manager,1,1,1,1
+access_crm_lead_team,crm.lead.team.access,crm.model_crm_lead,permisos_equipos_ventas.group_sale_team_manager,1,1,1,1
+access_sale_order_line_team,sale.order.line.team.access,sale.model_sale_order_line,permisos_equipos_ventas.group_sale_team_manager,1,1,1,1
 access_stock_picking_salesman,stock.picking.salesman,stock.model_stock_picking,sales_team.group_sale_salesman,1,0,0,0
 access_stock_move_salesman,stock.move.salesman,stock.model_stock_move,sales_team.group_sale_salesman,1,0,0,0
 access_stock_quant_salesman,stock.quant.salesman,stock.model_stock_quant,sales_team.group_sale_salesman,1,0,0,0
