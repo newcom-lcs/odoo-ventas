@@ -6,42 +6,6 @@ import pytz
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    # Override to make purchase orders accessible to salespeople
-    def action_view_purchase_orders(self):
-        self.ensure_one()
-        purchase_order_ids = self._get_purchase_orders().ids
-        action = {
-            'res_model': 'purchase.order',
-            'type': 'ir.actions.act_window',
-            'domain': [('id', 'in', purchase_order_ids)],
-            'view_mode': 'tree,form',
-            'name': f"Purchase Orders for {self.name}",
-        }
-        if len(purchase_order_ids) == 1:
-            action.update({
-                'view_mode': 'form',
-                'res_id': purchase_order_ids[0],
-            })
-        return action
-    
-    # Override to make deliveries accessible to salespeople
-    def action_view_delivery(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
-        pickings = self.mapped('picking_ids')
-        if len(pickings) > 1:
-            action['domain'] = [('id', 'in', pickings.ids)]
-        elif pickings:
-            form_view = [(self.env.ref('stock.view_picking_form').id, 'form')]
-            if 'views' in action:
-                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
-            else:
-                action['views'] = form_view
-            action['res_id'] = pickings.id
-        # Update context for salespeople
-        action['context'] = dict(self._context, default_partner_id=self.partner_id.id,
-                                 default_origin=self.name)
-        return action
-
     state = fields.Selection(selection_add=[
         ('manager_approval', 'Aprobación del Gerente'),
         ('cost_approval', 'Aprobación de Costos')

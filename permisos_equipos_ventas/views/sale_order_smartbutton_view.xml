@@ -1,26 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Make the Purchase Orders button visible for salespeople -->
-        <record id="view_order_form_inherit_purchase" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit.purchase</field>
+        <!-- Ensure Sales Users can see the delivery smart button -->
+        <record id="view_order_form_inherit_delivery_access" model="ir.ui.view">
+            <field name="name">sale.order.form.delivery.access</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_purchase.sale_order_inherited_form_purchase"/>
+            <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_view_purchase_orders']" position="attributes">
-                    <attribute name="groups">sales_team.group_sale_salesman,purchase.group_purchase_user</attribute>
-                </xpath>
-            </field>
-        </record>
-
-        <!-- Make the Deliveries button visible for salespeople -->
-        <record id="view_order_form_inherit_delivery" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit.delivery</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
-            <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_view_delivery']" position="attributes">
+                <!-- Ensure the delivery button is visible to sales users -->
+                <xpath expr="//button[@name='action_view_delivery']" position="attributes" optional="1">
                     <attribute name="groups">sales_team.group_sale_salesman,stock.group_stock_user</attribute>
+                </xpath>
+                
+                <!-- Ensure the purchase button is visible to sales users (if it exists) -->
+                <xpath expr="//button[contains(@name, 'purchase')]" position="attributes" optional="1">
+                    <attribute name="groups">sales_team.group_sale_salesman,purchase.group_purchase_user</attribute>
                 </xpath>
             </field>
         </record>
