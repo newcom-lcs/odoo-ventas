@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Make the Purchase Orders button visible for salespeople -->
+        <record id="view_order_form_inherit_purchase" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.purchase</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_purchase.view_order_form_inherit"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_purchase_orders']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Make the Deliveries button visible for salespeople -->
+        <record id="view_order_form_inherit_delivery" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.delivery</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_delivery']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo> 

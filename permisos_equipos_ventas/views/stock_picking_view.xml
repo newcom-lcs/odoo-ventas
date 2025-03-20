@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Ensure salespeople can see the chatter in stock pickings -->
+        <record id="stock_picking_form_view_salesman" model="ir.ui.view">
+            <field name="name">stock.picking.form.salesman</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="arch" type="xml">
+                <!-- Make the form readonly except for the chatter -->
+                <xpath expr="//form" position="attributes">
+                    <attribute name="edit">false</attribute>
+                </xpath>
+                
+                <!-- Make sure the chatter is accessible -->
+                <xpath expr="//div[hasclass('oe_chatter')]" position="replace">
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo> 
