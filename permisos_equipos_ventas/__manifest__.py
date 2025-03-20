@@ -20,7 +20,6 @@
         "views/sale_order_view.xml",
         'views/sale_order_menu.xml',
         'views/res_company.xml',
-        'views/sales_readonly_views.xml',
         'views/sale_order_smartbutton_view.xml',
         'views/purchase_order_view.xml',
         'views/stock_picking_view.xml'
