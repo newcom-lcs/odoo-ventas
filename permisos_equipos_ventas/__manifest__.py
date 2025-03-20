@@ -16,7 +16,6 @@
     "data": [
         "security/sales_team_security.xml",
         "security/sales_team_access.xml",
-        "security/sales_readonly_rules.xml",
         "security/ir.model.access.csv",
         "views/sale_order_view.xml",
         'views/sale_order_menu.xml',
