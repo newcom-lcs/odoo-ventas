@@ -8,20 +8,14 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="priority">99</field>  <!-- Higher priority to ensure it's applied after other views -->
             <field name="arch" type="xml">
-                <!-- Make the form readonly except for the chatter -->
-                <form position="attributes">
-                    <attribute name="edit">false</attribute>
-                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
-                </form>
-                
-                <!-- Make sure the chatter is accessible -->
-                <div class="oe_chatter" position="replace">
+                <!-- Only modify the chatter part to ensure it's accessible -->
+                <xpath expr="//div[hasclass('oe_chatter')]" position="replace">
                     <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user"/>
                         <field name="activity_ids"/>
                         <field name="message_ids"/>
                     </div>
-                </div>
+                </xpath>
             </field>
         </record>
     </data>
