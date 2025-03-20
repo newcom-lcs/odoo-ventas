@@ -12,7 +12,7 @@
                 </xpath>
                 
                 <!-- Ensure the purchase button is visible to sales users (if it exists) -->
-                <xpath expr="//button[contains(@name, 'purchase')]" position="attributes" optional="1">
+                <xpath expr="//button[@name='action_view_purchase_orders']" position="attributes" optional="1">
                     <attribute name="groups">sales_team.group_sale_salesman,purchase.group_purchase_user</attribute>
                 </xpath>
             </field>
