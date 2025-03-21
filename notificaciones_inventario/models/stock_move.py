@@ -34,14 +34,14 @@ class StockMove(models.Model):
             # Get operation type name
             operation_name = picking.picking_type_id.name if picking.picking_type_id else 'N/A'
             
-            # Get salesperson mention with just the name
-            salesperson_mention = f"@{order.user_id.name}" if order.user_id else ""
+            # Get salesperson name without @ symbol
+            salesperson_name = order.user_id.name if order.user_id else ""
             
             # Create detailed notification message with HTML formatting
             message = f"""
             <div style="margin: 0px; padding: 0px;">
                 <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                    Hola {salesperson_mention}, se ha completado la siguiente operación en el depósito:<br/>
+                    Hola {salesperson_name}, se ha completado la siguiente operación en el depósito:<br/>
                     <br/>
                     <strong>{operation_name}</strong><br/>
                     • Origen: {moves[0].location_id.name}<br/>
@@ -71,7 +71,8 @@ class StockMove(models.Model):
                 subject=subject,
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
-                partner_ids=[order.user_id.partner_id.id] if order.user_id and order.user_id.partner_id else []
+                partner_ids=[order.user_id.partner_id.id] if order.user_id and order.user_id.partner_id else [],
+                is_internal=True
             )
             
         return res 
