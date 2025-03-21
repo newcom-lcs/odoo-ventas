@@ -19,6 +19,10 @@ class StockMove(models.Model):
             if not move.picking_id:
                 continue
                 
+            # Skip if no quantity was actually done
+            if not move.quantity_done:
+                continue
+                
             # Try to find related sale order through origin
             sale_order = self.env['sale.order'].search([('name', 'in', move.origin.split(','))], limit=1)
             if sale_order:
@@ -51,7 +55,7 @@ class StockMove(models.Model):
             
             # Add details for each product
             for move in moves:
-                message += f"• {move.product_id.name}: {move.product_uom_qty} {move.product_uom.name}<br/>"
+                message += f"• {move.product_id.name}: {move.quantity_done} {move.product_uom.name}<br/>"
             
             message += """
                 </p>
