@@ -7,8 +7,7 @@ class SaleOrder(models.Model):
     business_unit_id = fields.Many2one(
         'business.unit', 
         string='Business Unit',
-        compute='_compute_business_unit',
-        inverse='_inverse_business_unit',
+        related='opportunity_id.business_unit_id',
         store=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         readonly=True
@@ -22,17 +21,6 @@ class SaleOrder(models.Model):
         string="Tipo de Negocio", help="Type of business related to the sales order", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
     state = fields.Selection(selection_add=[('approved', 'Approved')])
     opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
-
-    @api.depends('opportunity_id', 'opportunity_id.business_unit_id')
-    def _compute_business_unit(self):
-        for record in self:
-            if record.opportunity_id:
-                record.business_unit_id = record.opportunity_id.business_unit_id
-            
-    def _inverse_business_unit(self):
-        for record in self:
-            if record.opportunity_id:
-                record.opportunity_id.business_unit_id = record.business_unit_id
 
     def _compute_opportunity_count(self):
         for order in self:
