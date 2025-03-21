@@ -4,16 +4,35 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     opportunity_id = fields.Many2one('crm.lead', string='Opportunity', domain=[('type', '=', 'opportunity')], store=True)
-    business_unit_id = fields.Many2one('business.unit', string='Business Unit', related='opportunity_id.business_unit_id', store=True)
-    margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True)
-    mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", help="Date to generate the invoice", store=True)
+    business_unit_id = fields.Many2one(
+        'business.unit', 
+        string='Business Unit',
+        compute='_compute_business_unit',
+        inverse='_inverse_business_unit',
+        store=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        readonly=True
+    )
+    margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
+    mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", help="Date to generate the invoice", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
     tipo_negocio = fields.Selection([
         ('mantenimiento', 'Mantenimiento'),
         ('cajas', 'Cajas'),
         ('proyectos', 'Proyectos')],
-        string="Tipo de Negocio", help="Type of business related to the sales order", store=True)
+        string="Tipo de Negocio", help="Type of business related to the sales order", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
     state = fields.Selection(selection_add=[('approved', 'Approved')])
     opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
+
+    @api.depends('opportunity_id', 'opportunity_id.business_unit_id')
+    def _compute_business_unit(self):
+        for record in self:
+            if record.opportunity_id:
+                record.business_unit_id = record.opportunity_id.business_unit_id
+            
+    def _inverse_business_unit(self):
+        for record in self:
+            if record.opportunity_id:
+                record.opportunity_id.business_unit_id = record.business_unit_id
 
     def _compute_opportunity_count(self):
         for order in self:
