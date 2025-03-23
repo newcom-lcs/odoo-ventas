@@ -14,13 +14,13 @@
     "category": "Sales",
     "data": [
         "security/sales_team_security.xml",
-        "security/sales_readonly_rules.xml",
+        # "security/sales_readonly_rules.xml",
         "security/ir.model.access.csv",
         "views/sale_order_view.xml",
         'views/sale_order_menu.xml',
         'views/res_company.xml',
-        'views/sales_readonly_views.xml',
-        'views/sale_order_smartbutton_view.xml'
+        # 'views/sales_readonly_views.xml',
+        # 'views/sale_order_smartbutton_view.xml'
     ],
     "application": False,
     "installable": True,
