@@ -155,7 +155,7 @@ class SaleOrder(models.Model):
         if not self.company_id.use_approval_flow:
             raise UserError("El flujo de aprobaciones no está habilitado para esta compañía.")
 
-        if not self.env.user.has_group('permisos_equipos_ventas.group_team_documents_only'):
+        if not self.env.user.has_group('permisos_equipos_ventas.group_sale_team_manager'):
             raise AccessError("No tienes los permisos necesarios para aprobar como gerente.")
         
         self.write({'manager_approval': True})
