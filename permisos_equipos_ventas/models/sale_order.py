@@ -144,6 +144,8 @@ class SaleOrder(models.Model):
                     )
                 )
                 order.state = next_state
+                # Call parent method to handle project creation and other standard behaviors
+                return super(SaleOrder, self).action_confirm()
 
         return True
 
