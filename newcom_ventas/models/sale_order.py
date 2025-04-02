@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         readonly=True
     )
-    margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
+    margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True)
     mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", help="Date to generate the invoice", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
     tipo_negocio = fields.Selection([
         ('mantenimiento', 'Mantenimiento'),
