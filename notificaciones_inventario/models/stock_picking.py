@@ -73,7 +73,7 @@ class StockPicking(models.Model):
                 return
 
             # Create notification content
-            note_content = _(
+            base_content = _(
                 "La transferencia de stock %s ha sido validada en la ubicación %s. "
                 "Validado por: %s\n\n"
                 "Detalles de la transferencia:\n"
@@ -90,6 +90,12 @@ class StockPicking(models.Model):
                 sale_order.name,
                 picking.location_dest_id.name
             )
+
+            # Add delivery time message only for outgoing shipments
+            if picking.picking_type_id.code == 'outgoing':
+                note_content = base_content + _("\n\nLa entrega al cliente puede tardar hasta 72 horas. Por favor, esperar este tiempo antes de enviar la factura al cliente.")
+            else:
+                note_content = base_content
 
             # Add note to stock picking
             picking.message_post(

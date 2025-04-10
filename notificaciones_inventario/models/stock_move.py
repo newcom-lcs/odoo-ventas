@@ -24,7 +24,10 @@ class StockMove(models.Model):
                 continue
                 
             # Try to find related sale order through origin
-            sale_order = self.env['sale.order'].search([('name', 'in', move.origin.split(','))], limit=1)
+            sale_order = False
+            if move.origin:
+                sale_order = self.env['sale.order'].search([('name', 'in', move.origin.split(','))], limit=1)
+            
             if sale_order:
                 key = (move.picking_id, sale_order)
                 moves_by_picking[key].append(move)
@@ -57,7 +60,16 @@ class StockMove(models.Model):
             for move in moves:
                 message += f"• {move.product_id.name}: {move.quantity_done} {move.product_uom.name}<br/>"
             
-            message += """
+            # Only add delivery time message for outgoing shipments
+            if picking.picking_type_id.code == 'outgoing':
+                message += """
+                    <br/>
+                    <strong>La entrega al cliente puede tardar hasta 72 horas. Por favor, esperar este tiempo antes de enviar la factura al cliente.</strong>
+                </p>
+            </div>
+            """
+            else:
+                message += """
                 </p>
             </div>
             """
