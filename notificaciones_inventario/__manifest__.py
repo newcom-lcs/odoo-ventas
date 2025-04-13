@@ -11,7 +11,6 @@
     'author': 'Newcom LCS',
     'depends': ['stock', 'sale'],
     'data': [
-        'models/res_config_settings.py',
         'views/res_config_settings_views.xml',
     ],
     'installable': True,
