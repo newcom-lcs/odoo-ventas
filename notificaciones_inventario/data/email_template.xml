@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_stock_validation" model="mail.template">
+            <field name="name">Stock Move Validation Notification</field>
+            <field name="model_id" ref="stock.model_stock_move"/>
+            <field name="subject">Stock Move {{ object.name }} has been validated</field>
+            <field name="email_from">{{ user.email_formatted }}</field>
+            <field name="partner_to">{{ object.picking_id.partner_id.id }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Hello,</p>
+                    <p>The stock move {{ object.name }} has been validated.</p>
+                    <p>Details:</p>
+                    <ul>
+                        <li>Product: {{ object.product_id.name }}</li>
+                        <li>Quantity: {{ object.product_uom_qty }}</li>
+                        <li>Location: {{ object.location_id.name }}</li>
+                        <li>Destination: {{ object.location_dest_id.name }}</li>
+                    </ul>
+                    <p>Best regards,</p>
+                </div>
+            </field>
+            <field name="lang">{{ object.picking_id.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo> 

@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -7,20 +9,45 @@ class SaleOrder(models.Model):
     business_unit_id = fields.Many2one(
         'business.unit', 
         string='Business Unit',
-        related='opportunity_id.business_unit_id',
         store=True,
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-        readonly=True
+        required=True
     )
-    margen_teorico = fields.Float(string="Margen Teorico (%)", help="Percentage margin to add to the sales order", store=True)
+    margen_teorico = fields.Float(
+        string="Margen Teorico (%)", 
+        help="Percentage margin to add to the sales order", 
+        store=True
+    )
     mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", help="Date to generate the invoice", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
     tipo_negocio = fields.Selection([
         ('mantenimiento', 'Mantenimiento'),
         ('cajas', 'Cajas'),
         ('proyectos', 'Proyectos')],
-        string="Tipo de Negocio", help="Type of business related to the sales order", store=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, readonly=True)
+        string="Tipo de Negocio", 
+        help="Type of business related to the sales order", 
+        store=True,
+        required=True
+    )
     state = fields.Selection(selection_add=[('approved', 'Approved')])
     opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        """
+        Make `margen_teorico` readonly for users not in the Accounting Manager group.
+        """
+        fields = super(SaleOrder, self).fields_get(allfields=allfields, attributes=attributes)
+        if not self.env.user.has_group('account.group_account_manager'):
+            if 'margen_teorico' in fields:
+                fields['margen_teorico']['readonly'] = True
+        return fields
+
+    def write(self, vals):
+        """
+        Prevent non-accounting managers from modifying `margen_teorico`.
+        """
+        if 'margen_teorico' in vals and not self.env.user.has_group('account.group_account_manager'):
+            raise UserError(_("No tiene permisos para modificar el campo 'Margen Teórico'."))
+        return super(SaleOrder, self).write(vals)
 
     def _compute_opportunity_count(self):
         for order in self:
@@ -66,12 +93,6 @@ class SaleOrder(models.Model):
                     
         return result
 
-    def action_quotation_approve(self):
-        """Approve the quotation and move it to approved state."""
-        for order in self:
-            if order.state == 'sent':
-                order.write({'state': 'approved'})
-        return True
 
 class SaleReport(models.Model):
     _inherit = "sale.report"
