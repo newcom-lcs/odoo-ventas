@@ -41,4 +41,11 @@
         <field name="groups" eval="[(4, ref('group_sale_team_manager'))]"/>
         <field name="domain_force">[('team_id', 'in', user.crm_team_ids.ids)]</field>
     </record>
+
+    <record id="account_move_team_access_rule" model="ir.rule">
+        <field name="name">Invoices: Team Documents</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="groups" eval="[(4, ref('group_sale_team_manager'))]"/>
+        <field name="domain_force">[('invoice_user_id.crm_team_ids', 'in', user.crm_team_ids.ids)]</field>
+    </record>
 </odoo>
