@@ -10,9 +10,7 @@
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
     'depends': ['stock', 'sale'],
-    'data': [
-        'views/res_config_settings_views.xml',
-    ],
+    'data': [],
     'installable': True,
     'application': False,
     'auto_install': False,

@@ -8,14 +8,6 @@ class StockMove(models.Model):
         """Override to add notification when stock move is done"""
         res = super()._action_done(cancel_backorder=cancel_backorder)
         
-        # Check if notifications are enabled
-        notifications_enabled = self.env['ir.config_parameter'].sudo().get_param(
-            'inventory_notifications.enable_notifications', 'True'
-        ) == 'True'
-        
-        if not notifications_enabled:
-            return res
-            
         # Skip if this is a receipt from supplier (first stage)
         if self.mapped('location_id.usage') == ['supplier']:
             return res
