@@ -13,33 +13,36 @@
                          <div class="col-12 col-lg-6 o_setting_box">
                              <div class="o_setting_left_pane">
                                  <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
-                                     <field name="module_sale_order_bom_add_prefix" class="text-center oe_inline" />
+                                     <field name="sale_order_add_bom_prefix" class="text-center oe_inline" />
                                  </div>
                              </div>
                              <div class="o_setting_right_pane">
                                  <span class="o_form_label">Add "[BOM]" prefix to sale order Items</span>
+                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."></span>
                              </div>
                          </div>
 
                          <div class="col-12 col-lg-6 o_setting_box">
                              <div class="o_setting_left_pane">
                                  <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
-                                     <field name="module_sale_order_invoice_hide_bom_items" class="text-center oe_inline" />
+                                     <field name="invoice_hide_bom_items" class="text-center oe_inline" />
                                  </div>
                              </div>
                              <div class="o_setting_right_pane">
                                  <span class="o_form_label">Hide items with '[BOM]' prefix from customer invoices</span>
+                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."></span>
                              </div>
                          </div>
 
                          <div class="col-12 col-lg-6 o_setting_box">
                              <div class="o_setting_left_pane">
                                  <div class="o_field_widget o_field_upgrade_boolean o_field_boolean">
-                                     <field name="module_sale_order_invoice_hide_items_with_cero_price" class="text-center oe_inline" />
+                                     <field name="invoice_hide_cero_price" class="text-center oe_inline" />
                                  </div>
                              </div>
                              <div class="o_setting_right_pane">
                                  <span class="o_form_label">Hide items with price = 0 from customer invoices</span>
+                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."></span>
                              </div>
                          </div>
                          
