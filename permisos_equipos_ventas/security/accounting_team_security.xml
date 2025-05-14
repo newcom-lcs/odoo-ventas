@@ -2,7 +2,7 @@
 <odoo>
     <!-- Accounting Team Group -->
     <record id="group_accounting_team_viewer" model="res.groups">
-        <field name="name">Contabilidad: Visualizador de Facturas por Equipo</field>
+        <field name="name">Facturas por Equipo de Venta</field>
         <field name="comment">El usuario solo puede ver las facturas de sus equipos de ventas asignados.</field>
         <field name="category_id" ref="base.module_category_accounting_accounting"/>
         <!-- No inheritance to keep permissions minimal -->
