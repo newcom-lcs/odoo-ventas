@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Accounting Team Group -->
+    <record id="group_accounting_team_viewer" model="res.groups">
+        <field name="name">Contabilidad: Visualizador de Facturas por Equipo</field>
+        <field name="comment">El usuario solo puede ver las facturas de sus equipos de ventas asignados.</field>
+        <field name="category_id" ref="base.module_category_accounting_accounting"/>
+        <!-- No inheritance to keep permissions minimal -->
+    </record>
+
+    <!-- Record Rules for Account Moves (Invoices) -->
+    <record id="account_move_team_viewer_rule" model="ir.rule">
+        <field name="name">Facturas: Documentos del Equipo</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="groups" eval="[(4, ref('group_accounting_team_viewer'))]"/>
+        <field name="domain_force">[('team_id', 'in', user.crm_team_ids.ids)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Record Rules for Account Move Lines -->
+    <record id="account_move_line_team_viewer_rule" model="ir.rule">
+        <field name="name">Líneas de Factura: Documentos del Equipo</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="groups" eval="[(4, ref('group_accounting_team_viewer'))]"/>
+        <field name="domain_force">[('move_id.team_id', 'in', user.crm_team_ids.ids)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Access Rights -->
+    <record id="account_move_team_viewer_access" model="ir.model.access">
+        <field name="name">account.move.team.viewer</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="group_id" ref="group_accounting_team_viewer"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="account_move_line_team_viewer_access" model="ir.model.access">
+        <field name="name">account.move.line.team.viewer</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="group_id" ref="group_accounting_team_viewer"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo> 

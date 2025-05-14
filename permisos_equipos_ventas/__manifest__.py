@@ -3,17 +3,19 @@
     "version": "1.0",
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
-    "depends": ["sale_management", "sales_team", "crm", "stock", "purchase", "mail"],
+    "depends": ["sale_management", "sales_team", "crm", "stock", "purchase", "mail", "account"],
     "summary": "Manage sales orders visibility by team and read-only access to inventory and purchases.",
     "description": """
         - Restrict sales orders visibility based on team membership.
         - Make team_id field read-only for sales orders.
         - Provide read-only access to inventory and purchase data for sales users.
         - Allow sales users to interact with chatter on all documents.
+        - Provide restricted access to invoices for accounting team members.
     """,
     "category": "Sales",
     "data": [
         "security/sales_team_security.xml",
+        "security/accounting_team_security.xml",
         # "security/sales_readonly_rules.xml",
         "security/ir.model.access.csv",
         "views/sale_order_view.xml",
