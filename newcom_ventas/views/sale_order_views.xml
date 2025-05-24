@@ -10,6 +10,12 @@
                     <field name="opportunity_id" invisible="1"/>
                 </field>
 
+                <xpath expr="//field[@name='analytic_account_id']" position="before">
+                    <field name="margen_teorico" invisible="1"/>
+                    <field name="margen_teorico_display" groups="account.group_account_manager"/>
+                    <field name="margen_teorico_display" groups="!account.group_account_manager" readonly="1"/>
+                </xpath>
+
                 <div name="button_box" position="inside">
                     <button name="action_view_opportunity" 
                             type="object"

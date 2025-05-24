@@ -30,20 +30,29 @@ class SaleOrder(models.Model):
     state = fields.Selection(selection_add=[('approved', 'Approved')])
     opportunity_count = fields.Integer(string='Opportunity Count', compute='_compute_opportunity_count')
 
-    @api.model
-    def fields_get(self, allfields=None, attributes=None):
-        """
-        Make `margen_teorico` readonly for users not in the Accounting Manager group.
-        """
-        fields = super(SaleOrder, self).fields_get(allfields=allfields, attributes=attributes)
-        if not self.env.user.has_group('account.group_account_manager'):
-            if 'margen_teorico' in fields:
-                fields['margen_teorico']['readonly'] = True
-        return fields
+    @api.depends('margen_teorico')
+    def _compute_margen_teorico_display(self):
+        for record in self:
+            if self.env.user.has_group('account.group_account_manager'):
+                record.margen_teorico_display = record.margen_teorico
+            else:
+                record.margen_teorico_display = record.margen_teorico
+
+    margen_teorico_display = fields.Float(
+        string="Margen Teorico (%)",
+        compute='_compute_margen_teorico_display',
+        inverse='_inverse_margen_teorico_display',
+        store=False
+    )
+
+    def _inverse_margen_teorico_display(self):
+        for record in self:
+            if self.env.user.has_group('account.group_account_manager'):
+                record.margen_teorico = record.margen_teorico_display
 
     def write(self, vals):
         """
-        Prevent non-accounting managers from modifying `margen_teorico`.
+        Prevent non-accounting managers from modifying margen_teorico.
         """
         if 'margen_teorico' in vals and not self.env.user.has_group('account.group_account_manager'):
             raise UserError(_("No tiene permisos para modificar el campo 'Margen Teórico'."))
