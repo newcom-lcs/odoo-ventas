@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
                 record.margen_teorico_display = record.margen_teorico
 
     margen_teorico_display = fields.Float(
-        string="Margen Teorico (%)",
+        string="Margen Teórico (Editable)",
         compute='_compute_margen_teorico_display',
         inverse='_inverse_margen_teorico_display',
         store=False
@@ -115,18 +115,19 @@ class SaleReport(models.Model):
     business_unit_id = fields.Many2one('business.unit', string='Business Unit', readonly=True)
     mes_cierre_facturacion = fields.Date(string="Mes de Cierre (Facturación)", readonly=True)
 
-    def _select(self):
-        return super(SaleReport, self)._select() + """
-            , s.tipo_negocio
-            , s.margen_teorico
-            , s.business_unit_id
-            , s.mes_cierre_facturacion
-        """
-    
-    def _group_by(self):
-        return super(SaleReport, self)._group_by() + """
-            , s.tipo_negocio
-            , s.margen_teorico
-            , s.business_unit_id
-            , s.mes_cierre_facturacion
-        """
+    def _select_additional_fields(self):
+        res = super()._select_additional_fields()
+        res['tipo_negocio'] = "s.tipo_negocio"
+        res['margen_teorico'] = "s.margen_teorico"
+        res['business_unit_id'] = "s.business_unit_id"
+        res['mes_cierre_facturacion'] = "s.mes_cierre_facturacion"
+        return res
+
+    def _group_by_sale(self):
+        res = super()._group_by_sale()
+        res += """,
+            s.tipo_negocio,
+            s.margen_teorico,
+            s.business_unit_id,
+            s.mes_cierre_facturacion"""
+        return res
