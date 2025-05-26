@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
                 record.margen_teorico_display = record.margen_teorico
 
     margen_teorico_display = fields.Float(
-        string="Margen Teórico (Editable)",
+        string="Margen Teórico (%) ",
         compute='_compute_margen_teorico_display',
         inverse='_inverse_margen_teorico_display',
         store=False
