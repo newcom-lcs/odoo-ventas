@@ -15,7 +15,7 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="target_amount" widget="monetary" sum="Total Target"/>
                 <field name="achieved_amount" widget="monetary" sum="Total Achieved"/>
-                <field name="achievement_percentage" widget="percentage"/>
+                <field name="achievement_percentage" widget="float"/>
                 <field name="total_invoiced_ars" widget="monetary" sum="Total ARS"/>
                 <field name="total_invoiced_usd" widget="monetary" sum="Total USD"/>
                 <field name="state"/>
