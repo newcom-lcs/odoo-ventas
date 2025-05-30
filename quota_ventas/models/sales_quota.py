@@ -47,6 +47,13 @@ class SalesQuota(models.Model):
         store=True,
         currency_field='currency_id'
     )
+    achievement_percentage = fields.Float(
+        string=_('Achievement %'),
+        compute='_compute_achievement_percentage',
+        store=True,
+        digits=(5,2),
+        help=_('Percentage of achievement based on target amount')
+    )
     total_invoiced_amount = fields.Monetary(
         string=_('Total Invoiced'),
         compute='_compute_total_invoiced',
@@ -220,6 +227,14 @@ class SalesQuota(models.Model):
             except (ValueError, TypeError):
                 # If there's any error in date conversion or calculation, set to 0
                 record.achieved_amount = 0.0
+
+    @api.depends('target_amount', 'achieved_amount')
+    def _compute_achievement_percentage(self):
+        for record in self:
+            if record.target_amount and record.target_amount != 0:
+                record.achievement_percentage = (record.achieved_amount / record.target_amount) * 100
+            else:
+                record.achievement_percentage = 0.0
 
     @api.constrains('year')
     def _check_valid_year(self):
