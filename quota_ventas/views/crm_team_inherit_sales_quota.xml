@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_team_view_form_inherit_sales_quota" model="ir.ui.view">
+        <field name="name">crm.team.form.inherit.sales.quota</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button type="action"
+                        name="%(action_sales_quota)d"
+                        string="Sales Quotas"
+                        icon="fa-bullseye"
+                        context="{'search_default_team_id': active_id, 'default_team_id': active_id}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo> 

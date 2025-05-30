@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sales_quota_view,sales.quota.view,model_sales_quota,base.group_user,1,0,0,0
+access_sales_quota_readonly,sales.quota.readonly,model_sales_quota,sales_team.group_sale_salesman,1,0,0,0
+access_sales_quota_write,sales.quota.write,model_sales_quota,sales_team.group_sale_manager,1,1,1,1

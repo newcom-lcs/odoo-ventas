@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_sales_quota_tree" model="ir.ui.view">
+        <field name="name">sales.quota.tree</field>
+        <field name="model">sales.quota</field>
+        <field name="arch" type="xml">
+            <tree string="Sales Quotas" decoration-info="state == 'draft'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="year"/>
+                <field name="quarter"/>
+                <field name="company_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="target_amount" widget="monetary"/>
+                <field name="achieved_amount" widget="monetary"/>
+                <field name="total_invoiced_ars" widget="monetary"/>
+                <field name="total_invoiced_usd" widget="monetary"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_sales_quota_form" model="ir.ui.view">
+        <field name="name">sales.quota.form</field>
+        <field name="model">sales.quota</field>
+        <field name="arch" type="xml">
+            <form string="Sales Quota">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" 
+                            class="oe_highlight" states="draft"/>
+                    <button name="action_done" string="Mark as Done" type="object" 
+                            class="oe_highlight" states="confirmed"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" 
+                            states="confirmed,done" groups="account.group_account_manager"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="team_id" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="user_id" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="year" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="quarter" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="target_amount" widget="monetary" attrs="{'readonly': [('state', 'in', ['confirmed', 'done'])]}"/>
+                            <field name="achieved_amount" widget="monetary" readonly="1"/>
+                            <field name="total_invoiced_ars" widget="monetary" readonly="1"/>
+                            <field name="total_invoiced_usd" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_sales_quota_search" model="ir.ui.view">
+        <field name="name">sales.quota.search</field>
+        <field name="model">sales.quota</field>
+        <field name="arch" type="xml">
+            <search string="Search Sales Quotas">
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="year"/>
+                <field name="quarter"/>
+                <field name="currency_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Sales Team" name="groupby_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Salesperson" name="groupby_user" context="{'group_by':'user_id'}"/>
+                    <filter string="Year" name="groupby_year" context="{'group_by':'year'}"/>
+                    <filter string="Quarter" name="groupby_quarter" context="{'group_by':'quarter'}"/>
+                    <filter string="Currency" name="groupby_currency" context="{'group_by':'currency_id'}"/>
+                    <filter string="Status" name="groupby_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sales_quota" model="ir.actions.act_window">
+        <field name="name">Sales Quotas</field>
+        <field name="res_model">sales.quota</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_sales_quota_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first sales quota!
+            </p>
+            <p>
+                Define sales quotas for your sales team members by setting quarterly targets.
+            </p>
+        </field>
+    </record>
+</odoo> 
