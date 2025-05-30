@@ -139,7 +139,7 @@ class SalesQuota(models.Model):
                 for move in moves:
                     _logger.info('Move: %s', move.name)
                     _logger.info('- Date: %s', move.invoice_date)
-                    _logger.info('- Amount ARS: %s', move.t_untaxed_signed)
+                    _logger.info('- Amount ARS: %s', move.amount_untaxed_signed)
                     _logger.info('- Amount USD: %s', move.amount_untaxed_signed_second_currency)
                     _logger.info('- Team: %s', move.team_id.name)
                     _logger.info('- User: %s', move.invoice_user_id.name)
