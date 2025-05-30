@@ -13,10 +13,10 @@
                 <field name="quarter"/>
                 <field name="company_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="target_amount" widget="monetary"/>
-                <field name="achieved_amount" widget="monetary"/>
-                <field name="total_invoiced_ars" widget="monetary"/>
-                <field name="total_invoiced_usd" widget="monetary"/>
+                <field name="target_amount" widget="monetary" sum="Total Target"/>
+                <field name="achieved_amount" widget="monetary" sum="Total Achieved"/>
+                <field name="total_invoiced_ars" widget="monetary" sum="Total ARS"/>
+                <field name="total_invoiced_usd" widget="monetary" sum="Total USD"/>
                 <field name="state"/>
             </tree>
         </field>
