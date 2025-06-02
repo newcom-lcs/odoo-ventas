@@ -9,10 +9,15 @@
     """,
     'license': 'LGPL-3',
     'author': 'Newcom LCS',
-    'depends': ['stock', 'sale', 'purchase'],
+    'depends': [
+        'base',
+        'stock',
+        'sale',
+        'purchase',
+        'mail',
+    ],
     'data': [],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'LGPL-3',
 } 

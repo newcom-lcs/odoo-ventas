@@ -62,11 +62,13 @@ class StockPicking(models.Model):
                 )
                 return
 
-            # Get the salesperson
+            # Get the salesperson and project responsible
             salesperson = sale_order.user_id
-            if not salesperson:
+            project_responsible = sale_order.project_responsible_id
+            
+            if not salesperson and not project_responsible:
                 _logger.info(
-                    "Orden de venta %s no tiene vendedor asignado. "
+                    "Orden de venta %s no tiene vendedor ni responsable de proyecto asignado. "
                     "No se enviarán notificaciones.",
                     sale_order.name
                 )
@@ -97,13 +99,20 @@ class StockPicking(models.Model):
             else:
                 note_content = base_content
 
+            # Collect partner IDs for notification
+            partner_ids = []
+            if salesperson and salesperson.partner_id:
+                partner_ids.append(salesperson.partner_id.id)
+            if project_responsible and project_responsible.partner_id:
+                partner_ids.append(project_responsible.partner_id.id)
+
             # Add note to stock picking
             picking.message_post(
                 body=note_content,
                 message_type='notification',
                 subtype_xmlid='mail.mt_comment',
                 author_id=self.env.user.partner_id.id,
-                partner_ids=[salesperson.partner_id.id],
+                partner_ids=partner_ids,
             )
             _logger.info("Nota agregada a la transferencia %s", picking.name)
 
@@ -113,18 +122,30 @@ class StockPicking(models.Model):
                 message_type='notification',
                 subtype_xmlid='mail.mt_comment',
                 author_id=self.env.user.partner_id.id,
-                partner_ids=[salesperson.partner_id.id],
+                partner_ids=partner_ids,
             )
             _logger.info("Nota agregada a la orden de venta %s", sale_order.name)
 
-            # Send email notification
+            # Send email notifications
             template = self.env.ref('inventory_notifications.email_template_stock_validation')
-            template.send_mail(
-                picking.id,
-                force_send=True,
-                email_values={'email_to': salesperson.email}
-            )
-            _logger.info("Email enviado al vendedor %s", salesperson.name)
+            
+            # Send to salesperson if exists
+            if salesperson and salesperson.email:
+                template.send_mail(
+                    picking.id,
+                    force_send=True,
+                    email_values={'email_to': salesperson.email}
+                )
+                _logger.info("Email enviado al vendedor %s", salesperson.name)
+            
+            # Send to project responsible if exists
+            if project_responsible and project_responsible.email:
+                template.send_mail(
+                    picking.id,
+                    force_send=True,
+                    email_values={'email_to': project_responsible.email}
+                )
+                _logger.info("Email enviado al responsable de proyecto %s", project_responsible.name)
 
             _logger.info(
                 "Todas las notificaciones enviadas exitosamente para la transferencia %s",

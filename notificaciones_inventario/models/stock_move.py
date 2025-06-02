@@ -45,10 +45,16 @@ class StockMove(models.Model):
             
             if order_type == 'sale':
                 # Handle sales order notification
-                user_name = order.user_id.name if order.user_id else ""
-                message = self._create_sale_notification_message(picking, moves, operation_name, user_name)
+                salesperson_name = order.user_id.name if order.user_id else ""
+                project_responsible_name = order.project_responsible_id.name if order.project_responsible_id else ""
+                message = self._create_sale_notification_message(picking, moves, operation_name, salesperson_name, project_responsible_name)
                 subject = f"Actualización de Pedido {order.name} - {operation_name}"
-                partner_ids = [order.user_id.partner_id.id] if order.user_id and order.user_id.partner_id else []
+                # Include both salesperson and project responsible in notifications
+                partner_ids = []
+                if order.user_id and order.user_id.partner_id:
+                    partner_ids.append(order.user_id.partner_id.id)
+                if order.project_responsible_id and order.project_responsible_id.partner_id:
+                    partner_ids.append(order.project_responsible_id.partner_id.id)
             else:
                 # Handle purchase order notification
                 user_name = order.user_id.name if order.user_id else ""
@@ -56,7 +62,7 @@ class StockMove(models.Model):
                 subject = f"Actualización de Orden de Compra {order.name} - {operation_name}"
                 partner_ids = [order.user_id.partner_id.id] if order.user_id and order.user_id.partner_id else []
             
-            # Post message to the order and notify the user
+            # Post message to the order and notify the users
             order.message_post(
                 body=message,
                 subject=subject,
@@ -68,14 +74,25 @@ class StockMove(models.Model):
             
         return res
 
-    def _create_sale_notification_message(self, picking, moves, operation_name, user_name):
+    def _create_sale_notification_message(self, picking, moves, operation_name, salesperson_name, project_responsible_name):
         """Create notification message for sales orders"""
         # Convert server time to user timezone
         user_time = fields.Datetime.context_timestamp(self, fields.Datetime.now())
+        
+        # Create greeting based on who is being notified
+        if salesperson_name and project_responsible_name:
+            greeting = f"Hola {salesperson_name} y {project_responsible_name}"
+        elif salesperson_name:
+            greeting = f"Hola {salesperson_name}"
+        elif project_responsible_name:
+            greeting = f"Hola {project_responsible_name}"
+        else:
+            greeting = "Hola"
+            
         message = f"""
         <div style="margin: 0px; padding: 0px;">
             <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                Hola {user_name}, se ha completado la siguiente operación en el depósito:<br/>
+                {greeting}, se ha completado la siguiente operación en el depósito:<br/>
                 <br/>
                 <strong>{operation_name}</strong><br/>
                 • Origen: {moves[0].location_id.name}<br/>
