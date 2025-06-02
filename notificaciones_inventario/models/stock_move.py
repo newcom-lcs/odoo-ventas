@@ -70,6 +70,8 @@ class StockMove(models.Model):
 
     def _create_sale_notification_message(self, picking, moves, operation_name, user_name):
         """Create notification message for sales orders"""
+        # Convert server time to user timezone
+        user_time = fields.Datetime.context_timestamp(self, fields.Datetime.now())
         message = f"""
         <div style="margin: 0px; padding: 0px;">
             <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -80,7 +82,7 @@ class StockMove(models.Model):
                 • Destino: {moves[0].location_dest_id.name}<br/>
                 • Referencia: {picking.name}<br/>
                 • Validado por: {self.env.user.name}<br/>
-                • Fecha: {fields.Datetime.now()}<br/>
+                • Fecha: {user_time}<br/>
                 <br/>
                 <strong>Productos procesados:</strong><br/>
         """
@@ -107,6 +109,8 @@ class StockMove(models.Model):
 
     def _create_purchase_notification_message(self, picking, moves, operation_name, user_name):
         """Create notification message for purchase orders"""
+        # Convert server time to user timezone
+        user_time = fields.Datetime.context_timestamp(self, fields.Datetime.now())
         message = f"""
         <div style="margin: 0px; padding: 0px;">
             <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -117,7 +121,7 @@ class StockMove(models.Model):
                 • Destino: {moves[0].location_dest_id.name}<br/>
                 • Referencia: {picking.name}<br/>
                 • Validado por: {self.env.user.name}<br/>
-                • Fecha: {fields.Datetime.now()}<br/>
+                • Fecha: {user_time}<br/>
                 <br/>
                 <strong>Productos procesados:</strong><br/>
         """
